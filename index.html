@@ -280,6 +280,9 @@ body::before {
     background: rgba(20, 28, 55, 0.85);
 }
 .attr-name { font-weight: 600; font-size: 13px; color: #e2e8f0; margin-bottom: 6px; }
+.attr-name a { color: #7eb8ff; text-decoration: none; transition: color 0.2s; }
+.attr-name a:hover { color: #a78bfa; text-decoration: underline; }
+.attr-name a::after { content: ' ↗'; font-size: 10px; opacity: 0.5; }
 .attr-desc { font-size: 12px; color: #8b94a6; line-height: 1.6; }
 .attr-img {
     width: 100%; height: 160px; object-fit: cover; border-radius: 8px;
@@ -565,18 +568,16 @@ body::before {
     <div class="day">
       <div class="day-top">
         <span class="day-date">Mon Jun 8</span>
-        <span class="day-loc">Heidelberg (Day Trip)</span>
+        <span class="day-loc">Kaiserslautern</span>
         <span class="day-badge solo">Solo</span>
       </div>
       <ul class="day-items">
-        <li>Train from KL Hauptbahnhof to Heidelberg (~1h 15min)</li>
-        <li>Walk up to Heidelberg Castle — incredible views of the Neckar River</li>
-        <li>Explore the Old Town & Hauptstraße (longest pedestrian street in Germany)</li>
-        <li>Cross the Old Bridge for photos</li>
-        <li>Lunch at a riverside café, gelato on Hauptstraße</li>
-        <li>Train back to KL in the afternoon</li>
+        <li>Gartenschau park — Japanese Garden, dino exhibit, paddle boats on the lake</li>
+        <li>Walk the city loop: Stiftsplatz → Schillerplatz → Fackelstraße</li>
+        <li>Grab a Döner Kebab for lunch (Germany's #1 fast food!)</li>
+        <li>Afternoon gelato walk along the pedestrian zone</li>
       </ul>
-      <div class="day-tip">Super safe and touristy — perfect first solo adventure by train!</div>
+      <div class="day-tip">See the KL Solo Guide tab for all the details on what to do!</div>
     </div>
 
     <div class="day">
@@ -596,15 +597,14 @@ body::before {
     <div class="day">
       <div class="day-top">
         <span class="day-date">Wed Jun 10</span>
-        <span class="day-loc">Mannheim (Day Trip)</span>
+        <span class="day-loc">Kaiserslautern</span>
         <span class="day-badge solo">Solo</span>
       </div>
       <ul class="day-items">
-        <li>Quick train to Mannheim (~40 min)</li>
-        <li>Luisenpark — huge beautiful park with gondola rides and gardens</li>
-        <li>Technoseum — interactive science & technology museum</li>
-        <li>Shopping at Planken (pedestrian shopping street)</li>
-        <li>Train back in the afternoon</li>
+        <li>K in Lautern mall — shopping, food court, browse German stores</li>
+        <li>Pfalzgalerie museum — art & crafts exhibitions</li>
+        <li>Walk to Volkspark for a change of scenery</li>
+        <li>Try a Currywurst from a street stand (another German classic)</li>
       </ul>
     </div>
 
@@ -885,35 +885,35 @@ body::before {
     <div class="attr-grid">
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Attica_06-13_Athens_50_View_from_Philopappos_-_Acropolis_Hill.jpg/1280px-Attica_06-13_Athens_50_View_from_Philopappos_-_Acropolis_Hill.jpg" alt="Acropolis & Parthenon">
-        <div class="attr-name">Acropolis & Parthenon</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Acropolis+Parthenon+Athens+Greece" target="_blank">Acropolis & Parthenon</a></div>
         <div class="attr-desc">The ancient citadel on the hill — the Parthenon, Erechtheion, and Temple of Athena Nike. The most iconic ancient site in the world.</div>
         <div class="attr-tip">Go by 8 AM to beat the heat and crowds. Wear good shoes — it's rocky and steep.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/New_Acropolis_Museum_building_in_Athens%2C_Greece.jpg/1280px-New_Acropolis_Museum_building_in_Athens%2C_Greece.jpg" alt="Acropolis Museum">
-        <div class="attr-name">Acropolis Museum</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Acropolis+Museum+Athens" target="_blank">Acropolis Museum</a></div>
         <div class="attr-desc">World-class modern museum built right over ancient ruins. Glass floors let you see excavations below. Parthenon Gallery on top floor has incredible views.</div>
         <div class="attr-tip">Perfect for the hottest part of the afternoon — air-conditioned!</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/View_of_the_Temple_of_Hephaestus_from_the_Agora%2C_Athens%2C_20240531_1444_9772.jpg/1280px-View_of_the_Temple_of_Hephaestus_from_the_Agora%2C_Athens%2C_20240531_1444_9772.jpg" alt="Ancient Agora">
-        <div class="attr-name">Ancient Agora</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Ancient+Agora+Athens+Temple+Hephaestus" target="_blank">Ancient Agora</a></div>
         <div class="attr-desc">The ancient marketplace and civic center of Athens. Temple of Hephaestus is one of the best-preserved Greek temples anywhere.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Temple_Of_Olympian_Zeus_-_Olympieion_%28retouched%29.jpg/1280px-Temple_Of_Olympian_Zeus_-_Olympieion_%28retouched%29.jpg" alt="Temple of Olympian Zeus">
-        <div class="attr-name">Temple of Olympian Zeus</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Temple+of+Olympian+Zeus+Athens" target="_blank">Temple of Olympian Zeus</a></div>
         <div class="attr-desc">Massive ruins of the largest temple in ancient Greece. The remaining columns are jaw-dropping. Right next to Hadrian's Arch.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Evzones_at_Changing_of_the_Guard%2C_Syntagma_Square%2C_Athens.JPG/1280px-Evzones_at_Changing_of_the_Guard%2C_Syntagma_Square%2C_Athens.JPG" alt="Evzones Guard at Syntagma Square">
-        <div class="attr-name">Syntagma Square</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Syntagma+Square+Evzones+guard+Athens" target="_blank">Syntagma Square</a></div>
         <div class="attr-desc">Parliament building with the famous Evzones presidential guard. Watch the changing of the guard ceremony — they march in traditional uniforms with pom-pom shoes!</div>
         <div class="attr-tip">Ceremony happens every hour on the hour, but the big one is Sundays at 11 AM.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/View_of_Lycabettus_Hill_from_the_Areopagus%2C_Athens%2C_20240531_1216_9596.jpg/1280px-View_of_Lycabettus_Hill_from_the_Areopagus%2C_Athens%2C_20240531_1216_9596.jpg" alt="Lycabettus Hill">
-        <div class="attr-name">Lycabettus Hill</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Lycabettus+Hill+Athens+sunset+view" target="_blank">Lycabettus Hill</a></div>
         <div class="attr-desc">The highest point in Athens — take the funicular (cable car) or hike up for 360° views. Tiny chapel at the summit. THE sunset spot in Athens.</div>
         <div class="attr-tip">Go for sunset — bring your camera. The view of the Acropolis lit up at dusk is unreal.</div>
       </div>
@@ -925,28 +925,28 @@ body::before {
     <div class="attr-grid">
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Panos_Street_in_the_neighborhood_of_Plaka._In_the_background_the_Acropolis.jpg/1280px-Panos_Street_in_the_neighborhood_of_Plaka._In_the_background_the_Acropolis.jpg" alt="Plaka neighborhood">
-        <div class="attr-name">Plaka</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Plaka+neighborhood+Athens+Greece" target="_blank">Plaka</a></div>
         <div class="attr-desc">The oldest neighborhood in Athens. Winding cobblestone streets, colorful bougainvillea, cafés, souvenir shops, and street musicians. Magical at night.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Monastiraki_Flea_Market%2C_Athens_%283341047236%29.jpg/1280px-Monastiraki_Flea_Market%2C_Athens_%283341047236%29.jpg" alt="Monastiraki Flea Market">
-        <div class="attr-name">Monastiraki Flea Market</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Monastiraki+Flea+Market+Athens" target="_blank">Monastiraki Flea Market</a></div>
         <div class="attr-desc">Huge open-air market with vintage finds, leather goods, jewelry, art prints, and souvenirs. Best on Sundays when it sprawls into surrounding streets.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Athens%2C_Ermou_and_Normanou_streets.JPG/1280px-Athens%2C_Ermou_and_Normanou_streets.JPG" alt="Ermou Street">
-        <div class="attr-name">Ermou Street</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Ermou+Street+Athens+shopping" target="_blank">Ermou Street</a></div>
         <div class="attr-desc">Main pedestrian shopping boulevard connecting Syntagma to Monastiraki. International brands, Greek designers, and everything in between.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Anafiotika%2C_Athens%2C_20240601_0923_0020.jpg/1280px-Anafiotika%2C_Athens%2C_20240601_0923_0020.jpg" alt="Anafiotika">
-        <div class="attr-name">Anafiotika</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Anafiotika+Athens+Greece" target="_blank">Anafiotika</a></div>
         <div class="attr-desc">Hidden gem! A tiny Cycladic-style village with white-washed houses tucked right under the Acropolis. Feels like a Greek island in the middle of the city.</div>
         <div class="attr-tip">Easy to miss — look for narrow stairs heading uphill from Plaka toward the Acropolis.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Psyrri%2C_Athens.jpg/1280px-Psyrri%2C_Athens.jpg" alt="Psyrri">
-        <div class="attr-name">Psyrri</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Psyrri+Athens+street+art" target="_blank">Psyrri</a></div>
         <div class="attr-desc">The hip, artsy neighborhood. Street art everywhere, trendy cafés, vintage shops, and the best street food in Athens. Great for wandering.</div>
       </div>
     </div>
@@ -957,26 +957,26 @@ body::before {
     <div class="attr-grid">
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/20211103_125_saronikos.jpg/1280px-20211103_125_saronikos.jpg" alt="Saronic Islands">
-        <div class="attr-name">Saronic Islands Day Cruise</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Saronic+Islands+cruise+Greece+Hydra+Poros+Aegina" target="_blank">Saronic Islands Day Cruise</a></div>
         <div class="attr-desc">Full-day cruise visiting three islands: Hydra, Poros, and Aegina. Swimming stops, lunch on board, live music. Departs from Piraeus port (easy tram from city center). About 11 hours of island paradise.</div>
         <div class="attr-tip">Book at least a week in advance — this is the #1 most popular day trip from Athens!</div>
         <div class="attr-tags"><span class="attr-tag">Full Day</span><span class="attr-tag">3 Islands</span><span class="attr-tag">Swimming</span></div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Hydra_Port_-_Saronic_Islands_of_Greece_-_Aug._2006.jpg/1280px-Hydra_Port_-_Saronic_Islands_of_Greece_-_Aug._2006.jpg" alt="Hydra Island">
-        <div class="attr-name">Hydra</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Hydra+island+Greece" target="_blank">Hydra</a></div>
         <div class="attr-desc">The most beautiful Saronic island. No cars or motorbikes allowed — only donkeys, water taxis, and walking. Crystal-clear water, stone architecture, art galleries, and cats everywhere.</div>
         <div class="attr-tags"><span class="attr-tag">No Cars</span><span class="attr-tag">Art</span><span class="attr-tag">Swimming</span></div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Lascar_Island_of_Aegina_-_Main_harbour_%284518425007%29.jpg/1280px-Lascar_Island_of_Aegina_-_Main_harbour_%284518425007%29.jpg" alt="Aegina Island">
-        <div class="attr-name">Aegina</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Aegina+island+Greece" target="_blank">Aegina</a></div>
         <div class="attr-desc">The pistachio island! Famous for its pistachio everything — ice cream, pastries, butter. Also home to the Temple of Aphaia, one of the best-preserved ancient temples in Greece.</div>
         <div class="attr-tags"><span class="attr-tag">Pistachios</span><span class="attr-tag">Temple</span><span class="attr-tag">Beach</span></div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Greece_Cape_Sounion_BW_2017-10-09_10-55-40.jpg/1280px-Greece_Cape_Sounion_BW_2017-10-09_10-55-40.jpg" alt="Cape Sounion Temple of Poseidon">
-        <div class="attr-name">Cape Sounion (Temple of Poseidon)</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Cape+Sounion+Temple+of+Poseidon+sunset" target="_blank">Cape Sounion (Temple of Poseidon)</a></div>
         <div class="attr-desc">Not an island, but a coastal must-do. Ancient temple perched on dramatic sea cliffs about 1 hour south of Athens. Legendary sunset — this is where ancient Greeks watched for ships.</div>
         <div class="attr-tip">Go for sunset. Half-day tours depart in the afternoon. Absolutely unforgettable.</div>
         <div class="attr-tags"><span class="attr-tag">Sunset</span><span class="attr-tag">Temple</span><span class="attr-tag">Coastal</span></div>
@@ -989,18 +989,18 @@ body::before {
     <div class="attr-grid">
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Asteras_Beach_Glyfada_Athens%2C_Greece_%2844869108691%29.jpg/1280px-Asteras_Beach_Glyfada_Athens%2C_Greece_%2844869108691%29.jpg" alt="Glyfada Beach">
-        <div class="attr-name">Glyfada Beach</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Glyfada+Beach+Athens+Greece" target="_blank">Glyfada Beach</a></div>
         <div class="attr-desc">Popular sandy beach on the Athens Riviera. Easy tram ride from the center. Restaurants, cafés, and shops along the waterfront. Great for a half-day beach escape.</div>
         <div class="attr-tags"><span class="attr-tag">Tram Access</span><span class="attr-tag">Sandy</span><span class="attr-tag">Restaurants</span></div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Vouliagmeni_Lake_Athens_Greece.jpg/1280px-Vouliagmeni_Lake_Athens_Greece.jpg" alt="Vouliagmeni Lake">
-        <div class="attr-name">Vouliagmeni Beach & Lake</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Vouliagmeni+Lake+Athens+Greece" target="_blank">Vouliagmeni Beach & Lake</a></div>
         <div class="attr-desc">Crystal-clear upscale beach plus a nearby thermal lake fed by underground springs. The lake is warm year-round and surrounded by cliffs — very unique.</div>
         <div class="attr-tags"><span class="attr-tag">Thermal Lake</span><span class="attr-tag">Crystal Clear</span></div>
       </div>
       <div class="attr">
-        <div class="attr-name">Stavros Niarchos Foundation Beach (SNFCC)</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Stavros+Niarchos+Foundation+Athens+beach" target="_blank">Stavros Niarchos Foundation Beach (SNFCC)</a></div>
         <div class="attr-desc">Free urban beach at the stunning Stavros Niarchos Cultural Center. Modern architecture, park, canal, and a saltwater swimming area. Very photogenic.</div>
         <div class="attr-tags"><span class="attr-tag">Free</span><span class="attr-tag">Modern</span><span class="attr-tag">Park</span></div>
       </div>
@@ -1012,30 +1012,30 @@ body::before {
     <div class="attr-grid">
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Souvlaki_in_Athens.JPG/1280px-Souvlaki_in_Athens.JPG" alt="Souvlaki">
-        <div class="attr-name">Souvlaki Crawl</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Athens+souvlaki+Greek+street+food" target="_blank">Souvlaki Crawl</a></div>
         <div class="attr-desc">You can't leave Athens without a souvlaki obsession. Try Kostas (tiny, legendary), Bairaktaris (huge portions), and Thanasis (near Monastiraki). Get chicken or pork wrapped in pita with tzatziki.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Loukoumades_Greek_Doughnuts_with_Walnuts_and_Honey.jpg/1280px-Loukoumades_Greek_Doughnuts_with_Walnuts_and_Honey.jpg" alt="Loukoumades">
-        <div class="attr-name">Loukoumades</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Loukoumades+Greek+honey+donuts" target="_blank">Loukoumades</a></div>
         <div class="attr-desc">Greek honey donuts — crispy on the outside, fluffy inside, drizzled with honey and cinnamon. Try Lukumades in Psyrri for the Instagram-worthy version with Nutella and ice cream.</div>
       </div>
       <div class="attr">
-        <div class="attr-name">Varvakios Agora (Central Market)</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Varvakios+Agora+Athens+Central+Market" target="_blank">Varvakios Agora (Central Market)</a></div>
         <div class="attr-desc">Athens' massive indoor market. Fish, meat, spices, olives, cheese, dried fruits. It's intense and fascinating — a real sensory experience.</div>
       </div>
       <div class="attr">
-        <div class="attr-name">Athens Food Tour</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Athens+food+tour+Greece" target="_blank">Athens Food Tour</a></div>
         <div class="attr-desc">Guided walking food tours through Psyrri and the Central Market. Sample gyros, spanakopita, baklava, Greek coffee, and local wines. Great way to learn the food scene.</div>
         <div class="attr-tip">Book on GetYourGuide or Viator — morning tours are best before the heat.</div>
       </div>
       <div class="attr">
-        <div class="attr-name">Greek Frappe & Freddo</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Greek+Freddo+Espresso+coffee+Athens" target="_blank">Greek Frappe & Freddo</a></div>
         <div class="attr-desc">The Greek iced coffee. Frappe is instant coffee shaken with ice (surprisingly good). Freddo Espresso is the fancier version. Order "metrio" for medium sugar. You'll drink 5 a day.</div>
       </div>
       <div class="attr">
         <img class="attr-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Acropolis_Of_Athens_Greece_04.jpg/1280px-Acropolis_Of_Athens_Greece_04.jpg" alt="Acropolis at night">
-        <div class="attr-name">Rooftop Dinner with Acropolis View</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Athens+rooftop+restaurant+Acropolis+view+night" target="_blank">Rooftop Dinner with Acropolis View</a></div>
         <div class="attr-desc">There's nothing like dinner with the Parthenon lit up above you. Try A for Athens rooftop bar, Couleur Locale, or the rooftop at Hotel Grande Bretagne.</div>
         <div class="attr-tip">Book a table for sunset — these places fill up fast in summer.</div>
       </div>
@@ -1046,15 +1046,15 @@ body::before {
     <div class="section-title"><span>🎒</span> Adventure & Activities</div>
     <div class="attr-grid">
       <div class="attr">
-        <div class="attr-name">Kayaking on the Athens Riviera</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Athens+Riviera+kayaking+Vouliagmeni" target="_blank">Kayaking on the Athens Riviera</a></div>
         <div class="attr-desc">Stand-up paddleboarding and kayaking tours from Vouliagmeni. Paddle along the coastline, stop at hidden coves, and snorkel in crystal-clear water.</div>
       </div>
       <div class="attr">
-        <div class="attr-name">Bike Tour of Athens</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=Athens+bike+tour+Greece" target="_blank">Bike Tour of Athens</a></div>
         <div class="attr-desc">Guided cycling through ancient sites, neighborhoods, and hidden gems. Most tours are easy flat rides through the city center. Fun and different way to see everything.</div>
       </div>
       <div class="attr">
-        <div class="attr-name">National Garden</div>
+        <div class="attr-name"><a href="https://www.google.com/search?tbm=isch&q=National+Garden+Athens+Greece" target="_blank">National Garden</a></div>
         <div class="attr-desc">15 acres of shady gardens behind Parliament. Palm trees, ponds with turtles, a small zoo, ancient ruins scattered around. Perfect escape from the summer heat.</div>
       </div>
     </div>
@@ -1394,25 +1394,6 @@ body::before {
       <div class="attr">
         <div class="attr-name">City Walking Loop</div>
         <div class="attr-desc">Walk from the apartment → Stiftsplatz → Stiftskirche → Schillerplatz → Fackelstraße (shopping) → Fruchthalle → back. About 30 minutes, hits all the landmarks.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span>🚆</span> Solo Day Trips by Train</div>
-    <div class="attr-grid">
-      <div class="attr">
-        <div class="attr-name">Heidelberg (~1h 15min)</div>
-        <div class="attr-desc">THE best solo day trip. Castle, Old Town, Old Bridge — it's touristy, super safe, English-friendly, and incredibly beautiful. Can't go wrong here.</div>
-        <div class="attr-tip">Trains run frequently. Check DB Navigator for the next departure.</div>
-      </div>
-      <div class="attr">
-        <div class="attr-name">Mannheim (~40 min)</div>
-        <div class="attr-desc">Easy, quick train ride. Luisenpark is beautiful (huge park with gondola rides). Planken is the main shopping street. Technoseum is a great interactive science museum.</div>
-      </div>
-      <div class="attr">
-        <div class="attr-name">Saarbrücken (~1 hour)</div>
-        <div class="attr-desc">Capital of the Saarland region, right near the French border. Franco-German culture, nice shopping, pretty old town along the Saar River. A different vibe from KL.</div>
       </div>
     </div>
   </div>
