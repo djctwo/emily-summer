@@ -27,12 +27,37 @@ Interactive travel dashboard for Emily's 22-day European summer trip (Jun 3-25, 
 - **Jun 25**: Departure FRA→LAS direct (Condor DE2062, seat 20A)
 
 ## Dashboard Structure
-- **File**: `index.html` — single-file HTML, ~1600 lines
-- **Theme**: Midnight Aurora (blue/purple/cyan gradients, frosted glass panels, backdrop blur) — matches summer-trip dashboard
+- **File**: `index.html` — single-file HTML, ~2940 lines
+- **Theme**: Midnight Aurora with warm amber tints (blue/purple/cyan gradients + gold accents, frosted glass panels, backdrop blur) — matches summer-trip dashboard
 - **Tabs**: Itinerary, Athens, Düsseldorf, Weekend Trips, KL Solo Guide, Travel Info
-- **Stats row**: 22 Days / 3 Countries / 6 Flights / 4 Cities / 1 Island Cruise
-- **Map**: Leaflet.js with dark tiles, markers for all destinations + day trip ideas
-- **Countdown timer**: Days until Jun 3 departure
+- **Mobile nav**: Fixed bottom tab bar (Itinerary, Athens, Düsseldorf, Info) on screens < 768px, desktop tab bar hidden
+- **Stats**: Compact stats strip (22 Days / 3 Countries / 6 Flights / 4 Cities / 1 Island Cruise)
+- **Map**: Leaflet.js with dark tiles, custom emoji divIcon markers for all destinations + day trip ideas
+- **Countdown timer**: Gradient pill badge with border
+- **Collapsible sections**: Weather & Destinations on itinerary tab; Travel Info tab has 4 collapsible groups (Flights & Accommodation, Prep & Packing, Emergency & Language, Restaurants & Photo Spots)
+- **Interactive features**: Packing checklist (30 items, localStorage), booking progress tracker (12 items, localStorage), share/copy itinerary button
+- **PWA**: apple-mobile-web-app meta tags, inline base64 manifest, SVG emoji favicon
+
+## Features Added (from summer-trip parity)
+- Trip timeline bar (color-coded day segments with hover expand)
+- Weather cards (4 cities: KL, Paris, Athens, Düsseldorf)
+- Destination cards (5 destinations with emoji heroes)
+- Visual flight cards (airport codes + arrow + times)
+- Overnights row (KL x14, Paris x1, Athens x4, Düsseldorf x2, In-flight x1)
+- Day tags (drive, train, flight, food, landmark, beach, chill, boat, shopping, country)
+- Overnight badges on key day cards
+- Emergency grid (numbers, addresses, embassies across 3 columns)
+- Language cheat sheet (Greek + German side-by-side)
+- Booking progress panel (12 items with priority badges: Booked/Urgent/Soon/Later)
+- Quick Book links (Booking.com, Skyscanner, GetYourGuide, DB, Rome2Rio, Google Maps)
+- Restaurant wishlist (6 cards: Kostas, A for Athens, Lukumades, Takumi, Bakery My Heart, Ladurée)
+- Photo spots (6 cards with best times: Areopagus, Lycabettus, Anafiotika, Trocadéro, Sacré-Cœur, MedienHafen)
+- Print styles (white background, hide map/timeline, expand all collapsibles)
+
+## Design Critique History
+- **Initial score**: 23/40 (Acceptable) — scored 2025-04-05
+- **Issues fixed**: Travel Info overload (collapsible sections), itinerary top-heaviness (compact strip + collapsible weather/destinations), no mobile nav (bottom tab bar added), text contrast (bumped to WCAG AA), cold aesthetic (warm amber tints), checkbox affordance (visible backgrounds + hover), copy deduplication (Explorer Week solo days)
+- **Rollback tag**: `pre-critique-fixes` — tag before batch design changes
 
 ## Key Design Decisions
 - No prices shown anywhere (user requirement)
@@ -41,6 +66,7 @@ Interactive travel dashboard for Emily's 22-day European summer trip (Jun 3-25, 
 - Athens tab: 20 Wikimedia Commons images + Google Images links on all 27 attraction names
 - Weekend Trips tab: 10 train-accessible destinations from KL (Paris, Amsterdam, Heidelberg, Cologne, Strasbourg, Rhine Valley, Luxembourg, Bruges, Black Forest, Swiss Alps)
 - Password gate: SHA-256 via Web Crypto API, sessionStorage persistence
+- Midnight Aurora theme kept intentionally to match summer-trip sibling dashboard
 
 ## Conventions
 - Update CLAUDE.md and Session_History continuously throughout sessions
