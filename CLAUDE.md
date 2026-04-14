@@ -4,9 +4,9 @@
 Interactive travel dashboard for Emily's 22-day European summer trip (Jun 3-25, 2026). Password-protected, hosted on GitHub Pages. Midnight Aurora dark theme matching the Melissa summer-trip dashboard style.
 
 ## Repository
-- **Path**: `/Users/aaxis/Documents/GitHub/emily-summer`
-- **Remote**: `https://github.com/djctwo/emily-summer` (public, branch: main)
-- **Live URL**: `https://djctwo.github.io/emily-summer/`
+- **Path**: `/Users/aaxis/Documents/GitHub/emily`
+- **Remote**: `https://github.com/djctwo/emily` (public, branch: main)
+- **Live URL**: `https://djctwo.github.io/emily/`
 - **Password**: SHA-256 hashed (`emilysummer123!@#`), sessionStorage persistence
 - **Launcher**: `~/Applications/Dashboards/Emily Summer.app`
 
