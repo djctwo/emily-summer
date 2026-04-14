@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emily · Planning Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+<meta name="theme-color" content="#0b0e1a">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #0b0e1a;
+    color: #d0d5e0;
+    min-height: 100vh;
+    font-size: 13px;
+}
+body::before {
+    content: '';
+    position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 20% 20%, rgba(88, 130, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, 0.03) 0%, transparent 40%);
+    z-index: 0; pointer-events: none;
+}
+a { color: #7eb8ff; text-decoration: none; }
+a:hover { color: #a7cbff; }
+code { font-family: 'SF Mono', Menlo, monospace; background: rgba(99,130,255,0.1); padding: 1px 6px; border-radius: 4px; font-size: 11px; }
+
+/* Topbar */
+.topbar {
+    background: rgba(13, 17, 30, 0.95);
+    border-bottom: 1px solid rgba(99, 130, 255, 0.12);
+    padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(20px);
+}
+.topbar::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99, 180, 255, 0.3), rgba(168, 85, 247, 0.3), rgba(56, 189, 248, 0.3), transparent);
+}
+.topbar h1 {
+    font-size: 18px; font-weight: 700;
+    background: linear-gradient(135deg, #7eb8ff, #a78bfa, #38bdf8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 0.3px;
+}
+.topbar .meta {
+    display: flex; gap: 10px; align-items: center;
+    font-size: 11px; color: #7c8494;
+}
+.nav-pill {
+    font-size: 11px; font-weight: 600;
+    padding: 5px 12px;
+    background: rgba(99, 130, 255, 0.1);
+    border: 1px solid rgba(99, 130, 255, 0.2);
+    color: #7eb8ff;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.nav-pill:hover { background: rgba(99, 130, 255, 0.2); }
+
+/* Tabs */
+.tab-bar {
+    background: rgba(13, 17, 30, 0.85);
+    border-bottom: 1px solid rgba(99, 130, 255, 0.08);
+    padding: 0 24px;
+    display: flex; gap: 2px;
+    position: sticky; top: 54px; z-index: 40;
+    backdrop-filter: blur(14px);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+    padding: 12px 16px;
+    font-size: 12px; font-weight: 600; font-family: inherit;
+    color: #7c8494; background: transparent;
+    border: none;
+    cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    position: relative;
+}
+.tab-btn:hover { color: #c8cdd8; }
+.tab-btn.active {
+    color: #7eb8ff;
+    border-bottom-color: #7eb8ff;
+}
+.tab-btn .badge {
+    display: inline-block;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 999px;
+    margin-left: 6px;
+    background: rgba(251, 146, 60, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 22px 60px;
+    position: relative;
+    z-index: 1;
+}
+.panel { display: none; }
+.panel.active { display: block; animation: fade 0.25s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* Urgent banner */
+.urgent {
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.12), rgba(239, 68, 68, 0.08));
+    border: 1px solid rgba(251, 146, 60, 0.3);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px;
+}
+.urgent-icon { font-size: 24px; }
+.urgent-text strong { color: #fbbf24; font-weight: 700; }
+.urgent-text { font-size: 13px; color: #e2e8f0; line-height: 1.5; }
+.urgent-days {
+    margin-left: auto; text-align: right;
+    font-size: 10px; color: #7c8494;
+    white-space: nowrap;
+}
+.urgent-days strong { display: block; font-size: 22px; color: #fbbf24; font-weight: 800; line-height: 1; }
+
+/* Card base */
+.card {
+    background: rgba(15, 19, 35, 0.7);
+    border: 1px solid rgba(99, 130, 255, 0.15);
+    border-radius: 14px;
+    padding: 18px 20px;
+    backdrop-filter: blur(14px);
+    margin-bottom: 16px;
+}
+.card-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+}
+.card-title {
+    font-size: 12px; font-weight: 700;
+    color: #c8cdd8;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+.card-meta { font-size: 11px; color: #7c8494; }
+
+/* PTO bar */
+.pto-bar {
+    height: 10px;
+    background: rgba(99, 130, 255, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+}
+.pto-seg { height: 100%; transition: all 0.3s; }
+.pto-seg.winter { background: linear-gradient(90deg, #38bdf8, #7eb8ff); }
+.pto-seg.summer { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+.pto-seg.reserve { background: rgba(99, 130, 255, 0.15); flex: 1; }
+.pto-legend {
+    display: flex; gap: 18px; flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 11px; color: #7c8494;
+}
+.pto-legend-item { display: flex; align-items: center; gap: 6px; }
+.pto-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* Trip cards */
+.trips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.trip-card {
+    background: rgba(15, 19, 35, 0.7);
+    border: 1px solid rgba(99, 130, 255, 0.15);
+    border-radius: 14px;
+    padding: 18px;
+    backdrop-filter: blur(14px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+    cursor: pointer;
+}
+.trip-card:hover { border-color: rgba(99, 130, 255, 0.35); transform: translateY(-2px); }
+.trip-card.urgent-card {
+    border-color: rgba(251, 146, 60, 0.35);
+    background: linear-gradient(135deg, rgba(15, 19, 35, 0.7), rgba(251, 146, 60, 0.05));
+}
+.trip-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #7eb8ff, #a78bfa, #38bdf8);
+}
+.trip-card.urgent-card::before {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b, #ef4444);
+}
+.trip-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.trip-emoji { font-size: 20px; }
+.trip-title { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+.trip-dates { font-size: 11px; color: #7c8494; margin-bottom: 10px; }
+.trip-status {
+    display: inline-block;
+    font-size: 9px; font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+.status-booked { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+.status-plan { background: rgba(251, 146, 60, 0.15); color: #fbbf24; border: 1px solid rgba(251, 146, 60, 0.3); }
+.status-hold { background: rgba(168, 85, 247, 0.15); color: #c4a5fa; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+.trip-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 10px;
+    background: rgba(11, 14, 26, 0.6);
+    border-radius: 10px;
+    border: 1px solid rgba(99, 130, 255, 0.08);
+}
+.trip-stat { text-align: center; }
+.trip-stat-val { font-size: 17px; font-weight: 800; color: #7eb8ff; line-height: 1; }
+.trip-stat-label { font-size: 9px; color: #7c8494; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+.trip-countdown {
+    font-size: 11px; color: #c8cdd8;
+    padding: 8px 12px;
+    background: rgba(99, 130, 255, 0.06);
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: center;
+}
+.trip-countdown strong { color: #fbbf24; font-weight: 700; font-size: 13px; }
+
+/* Section head */
+.section-head {
+    font-size: 11px; font-weight: 700;
+    color: #c8cdd8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 24px 0 12px;
+    display: flex; align-items: center; gap: 10px;
+}
+.section-head::before {
+    content: '';
+    width: 3px; height: 12px;
+    background: linear-gradient(180deg, #7eb8ff, #a78bfa);
+    border-radius: 2px;
+}
+
+/* Tile grid */
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+}
+.tile {
+    padding: 10px 12px;
+    background: rgba(11,14,26,0.5);
+    border: 1px solid rgba(99,130,255,0.1);
+    border-radius: 10px;
+}
+.tile.highlight-ath { border-color: rgba(168,85,247,0.25); }
+.tile.highlight-dus { border-color: rgba(251,191,36,0.25); }
+.tile-date { font-size: 10px; color: #7eb8ff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.tile.highlight-ath .tile-date { color: #c4a5fa; }
+.tile.highlight-dus .tile-date { color: #fbbf24; }
+.tile-label { font-size: 12px; color: #e2e8f0; font-weight: 600; }
+.tile-meta { font-size: 10px; color: #7c8494; margin-top: 2px; }
+
+/* Flight search panel */
+.flight-search {
+    background: rgba(11, 14, 26, 0.6);
+    border: 1px solid rgba(99, 130, 255, 0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 12px;
+    color: #c8cdd8;
+    line-height: 1.7;
+}
+.flight-search .route {
+    font-family: 'SF Mono', Menlo, monospace;
+    color: #7eb8ff;
+    font-size: 12px;
+    font-weight: 600;
+}
+.flight-search > div { margin-bottom: 2px; }
+.flight-search .hint { color: #7c8494; font-size: 11px; margin-top: 6px; }
+
+/* Checklist */
+.checklist { }
+.check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid rgba(99, 130, 255, 0.1);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    background: rgba(11, 14, 26, 0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.check-item:hover { background: rgba(99, 130, 255, 0.06); border-color: rgba(99, 130, 255, 0.25); }
+.check-item input[type=checkbox] {
+    width: 17px; height: 17px;
+    margin-top: 2px;
+    accent-color: #7eb8ff;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.check-item.done { opacity: 0.5; }
+.check-item.done .check-label { text-decoration: line-through; }
+.check-label { font-size: 12px; color: #e2e8f0; font-weight: 500; line-height: 1.4; }
+.check-meta { font-size: 11px; color: #7c8494; margin-top: 4px; line-height: 1.5; }
+.check-links { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+.check-link {
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px;
+    background: rgba(99, 130, 255, 0.08);
+    color: #7eb8ff;
+    border: 1px solid rgba(99, 130, 255, 0.2);
+    border-radius: 5px;
+    text-decoration: none;
+}
+.check-link:hover { background: rgba(99, 130, 255, 0.18); }
+
+/* Progress bar for checklists */
+.progress-mini {
+    height: 4px;
+    background: rgba(99, 130, 255, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+.progress-mini-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #7eb8ff, #a78bfa);
+    transition: width 0.3s;
+}
+
+/* Timeline */
+.tl-row {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px dashed rgba(99, 130, 255, 0.08);
+    align-items: center;
+}
+.tl-row:last-child { border-bottom: none; }
+.tl-date { font-size: 11px; color: #7eb8ff; font-weight: 600; font-family: 'SF Mono', monospace; }
+.tl-event { font-size: 12px; color: #e2e8f0; }
+.tl-event-meta { font-size: 10px; color: #7c8494; display: block; margin-top: 2px; }
+.tl-tag {
+    font-size: 9px; font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.tag-emily { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+.tag-holiday { background: rgba(34, 197, 94, 0.12); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.25); }
+.tag-pto { background: rgba(168, 85, 247, 0.15); color: #c4a5fa; border: 1px solid rgba(168, 85, 247, 0.3); }
+.tag-trip { background: rgba(99, 130, 255, 0.15); color: #7eb8ff; border: 1px solid rgba(99, 130, 255, 0.3); }
+
+/* Analysis tables */
+.cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+.cmp-table th, .cmp-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(99, 130, 255, 0.08);
+}
+.cmp-table th {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #7c8494;
+    font-weight: 700;
+    background: rgba(11, 14, 26, 0.4);
+}
+.cmp-table tr:last-child td { border-bottom: none; }
+.cmp-table .best { color: #4ade80; font-weight: 700; }
+.cmp-table .bad { color: #f87171; }
+.cmp-table .num { font-family: 'SF Mono', monospace; text-align: right; }
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.kpi {
+    padding: 14px 16px;
+    background: rgba(11, 14, 26, 0.5);
+    border: 1px solid rgba(99, 130, 255, 0.1);
+    border-radius: 10px;
+}
+.kpi-val {
+    font-size: 22px; font-weight: 800;
+    background: linear-gradient(135deg, #7eb8ff, #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+.kpi-label { font-size: 10px; color: #7c8494; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
+.kpi-note { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+/* CTA buttons */
+.cta-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.btn-cta {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    padding: 8px 14px;
+    background: rgba(99, 130, 255, 0.12);
+    color: #7eb8ff;
+    border: 1px solid rgba(99, 130, 255, 0.25);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+.btn-cta:hover { background: rgba(99, 130, 255, 0.22); }
+.btn-cta.urgent { border-color: rgba(251, 146, 60, 0.35); color: #fbbf24; background: rgba(251,146,60,0.08); }
+.btn-cta.urgent:hover { background: rgba(251,146,60,0.18); }
+
+/* Info callouts */
+.info-box {
+    background: rgba(56, 189, 248, 0.06);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #c8cdd8;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+.info-box strong { color: #38bdf8; }
+
+.footer {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(99, 130, 255, 0.08);
+    text-align: center;
+    font-size: 11px;
+    color: #5c6474;
+}
+
+@media (max-width: 640px) {
+    .topbar { padding: 12px 16px; }
+    .topbar h1 { font-size: 15px; }
+    .container { padding: 18px 14px 40px; }
+    .tab-btn { padding: 10px 12px; font-size: 11px; }
+    .urgent { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .urgent-days { margin-left: 0; }
+    .tl-row { grid-template-columns: 80px 1fr auto; gap: 8px; font-size: 11px; }
+    .tl-date { font-size: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <h1>✈️  Emily · Planning Hub</h1>
+    <div class="meta">
+        <a href="index.html" class="nav-pill">Emily's site (pw) →</a>
+    </div>
+</div>
+
+<div class="tab-bar">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="summer26">Summer 2026</button>
+    <button class="tab-btn" data-tab="winter">Winter Visit <span class="badge">BOOK</span></button>
+    <button class="tab-btn" data-tab="summer27">Summer 2027</button>
+    <button class="tab-btn" data-tab="analysis">Analysis</button>
+    <button class="tab-btn" data-tab="timeline">Timeline</button>
+</div>
+
+<div class="container">
+
+<!-- OVERVIEW TAB -->
+<div class="panel active" id="tab-overview">
+
+    <div class="urgent">
+        <div class="urgent-icon">🎫</div>
+        <div class="urgent-text">
+            <strong>Winter visit tickets:</strong> LAS ↔ FRA round-trip should be booked by Jun–Aug 2026 for best pricing. 8 months out = sweet spot.
+        </div>
+        <div class="urgent-days">
+            <strong id="winterDays">—</strong>
+            days to arrival
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">PTO Budget 2027</div>
+            <div class="card-meta"><strong style="color:#7eb8ff">17</strong> planned · <strong style="color:#7eb8ff">3</strong> reserve · <strong style="color:#7eb8ff">20</strong> total</div>
+        </div>
+        <div class="pto-bar">
+            <div class="pto-seg winter" style="width: 40%"></div>
+            <div class="pto-seg summer" style="width: 45%"></div>
+            <div class="pto-seg reserve"></div>
+        </div>
+        <div class="pto-legend">
+            <div class="pto-legend-item"><div class="pto-legend-dot" style="background: #38bdf8"></div> Winter 8d (Dec 21-24 + 28-31)</div>
+            <div class="pto-legend-item"><div class="pto-legend-dot" style="background: #fbbf24"></div> Summer 9d (Jul 6-9 + 12-16)</div>
+            <div class="pto-legend-item"><div class="pto-legend-dot" style="background: rgba(99,130,255,0.25)"></div> Reserve 3d</div>
+        </div>
+    </div>
+
+    <div class="section-head">Planned Visits</div>
+    <div class="trips-grid">
+        <div class="trip-card" onclick="showTab('summer26')">
+            <div class="trip-head">
+                <div class="trip-emoji">🌊</div>
+                <div class="trip-title">Summer 2026 Trip</div>
+            </div>
+            <div class="trip-dates">Jun 3 – Jun 25, 2026</div>
+            <div class="trip-status status-booked">Booked · Planning</div>
+            <div class="trip-stats">
+                <div class="trip-stat"><div class="trip-stat-val">22</div><div class="trip-stat-label">Days</div></div>
+                <div class="trip-stat"><div class="trip-stat-val">3</div><div class="trip-stat-label">Countries</div></div>
+                <div class="trip-stat"><div class="trip-stat-val">6</div><div class="trip-stat-label">Flights</div></div>
+            </div>
+            <div class="trip-countdown">Arrives in <strong id="summer26Days">—</strong> days</div>
+        </div>
+
+        <div class="trip-card urgent-card" onclick="showTab('winter')">
+            <div class="trip-head">
+                <div class="trip-emoji">❄️</div>
+                <div class="trip-title">Winter Visit</div>
+            </div>
+            <div class="trip-dates">Dec 19, 2026 – Jan 3, 2027</div>
+            <div class="trip-status status-plan">Book Flights Now</div>
+            <div class="trip-stats">
+                <div class="trip-stat"><div class="trip-stat-val">16</div><div class="trip-stat-label">Days</div></div>
+                <div class="trip-stat"><div class="trip-stat-val">8</div><div class="trip-stat-label">PTO</div></div>
+                <div class="trip-stat"><div class="trip-stat-val">2</div><div class="trip-stat-label">Fed Hols</div></div>
+            </div>
+            <div class="trip-countdown">Arrives in <strong id="winterDays2">—</strong> days</div>
+        </div>
+
+        <div class="trip-card" onclick="showTab('summer27')">
+            <div class="trip-head">
+                <div class="trip-emoji">☀️</div>
+                <div class="trip-title">Summer Visit 2027</div>
+            </div>
+            <div class="trip-dates">Jul 3 – Jul 17, 2027</div>
+            <div class="trip-status status-hold">Plan Approved</div>
+            <div class="trip-stats">
+                <div class="trip-stat"><div class="trip-stat-val">15</div><div class="trip-stat-label">Days</div></div>
+                <div class="trip-stat"><div class="trip-stat-val">9</div><div class="trip-stat-label">PTO</div></div>
+                <div class="trip-stat"><div class="trip-stat-val">1</div><div class="trip-stat-label">Fed Hol</div></div>
+            </div>
+            <div class="trip-countdown">Arrives in <strong id="summer27Days">—</strong> days</div>
+        </div>
+    </div>
+
+    <div class="section-head">Quick Summary</div>
+    <div class="card">
+        <div class="kpi-grid">
+            <div class="kpi">
+                <div class="kpi-val">31</div>
+                <div class="kpi-label">Days w/ Emily</div>
+                <div class="kpi-note">Winter + Summer 2027</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">17</div>
+                <div class="kpi-label">PTO used</div>
+                <div class="kpi-note">of 20 available</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">1.8x</div>
+                <div class="kpi-label">Leverage</div>
+                <div class="kpi-note">days/PTO day</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">3</div>
+                <div class="kpi-label">Fed Holidays</div>
+                <div class="kpi-note">Xmas · NYE · 4th Jul</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SUMMER 2026 TAB -->
+<div class="panel" id="tab-summer26">
+    <div class="info-box">
+        <strong>Interactive site for Emily:</strong> <a href="index.html">index.html</a> (live at <code>djctwo.github.io/emily/</code>) — password-protected with <code>emilysummer123!@#</code>. She uses that for the day-of trip.
+    </div>
+
+    <div class="section-head">Flight & Stay Bookings</div>
+    <div class="card">
+        <div class="flight-search">
+            <div><strong>Outbound:</strong> <span class="route">LAS → BOS → FRA</span> · Jun 3 · JetBlue B6478 + Condor DE2039 · booking <code>15635316-02</code></div>
+            <div><strong>Return:</strong> <span class="route">FRA → LAS</span> · Jun 25 direct · Condor DE2062 · seat 20A</div>
+            <div><strong>Athens RT:</strong> <span class="route">FRA ↔ ATH</span> · Jun 14-18 · SKY Express · conf <code>FX4K8A</code></div>
+            <div><strong>Athens stay:</strong> Acropolis Muses apartment · booking <code>5392664665</code></div>
+        </div>
+    </div>
+
+    <div class="section-head">22-Day Itinerary</div>
+    <div class="card">
+        <div class="tiles">
+            <div class="tile"><div class="tile-date">Jun 3</div><div class="tile-label">Travel LAS→FRA</div><div class="tile-meta">via Boston</div></div>
+            <div class="tile"><div class="tile-date">Jun 4–5</div><div class="tile-label">KL settle in</div><div class="tile-meta">Kaiserslautern</div></div>
+            <div class="tile"><div class="tile-date">Jun 6–7</div><div class="tile-label">Paris weekend</div><div class="tile-meta">TGV suggested</div></div>
+            <div class="tile"><div class="tile-date">Jun 8–13</div><div class="tile-label">Explorer week</div><div class="tile-meta">KL solo + Rhine</div></div>
+            <div class="tile highlight-ath"><div class="tile-date">Jun 14–18</div><div class="tile-label">Athens 🇬🇷</div><div class="tile-meta">5 nights, Acropolis</div></div>
+            <div class="tile"><div class="tile-date">Jun 19</div><div class="tile-label">Recovery</div><div class="tile-meta">Back in KL</div></div>
+            <div class="tile highlight-dus"><div class="tile-date">Jun 20–22</div><div class="tile-label">Düsseldorf 🇩🇪</div><div class="tile-meta">Japantown + food</div></div>
+            <div class="tile"><div class="tile-date">Jun 23–24</div><div class="tile-label">Final KL days</div><div class="tile-meta">Pack + wind down</div></div>
+            <div class="tile"><div class="tile-date">Jun 25</div><div class="tile-label">Departure</div><div class="tile-meta">FRA→LAS direct</div></div>
+        </div>
+    </div>
+
+    <div class="section-head">Pre-Trip Checklist</div>
+    <div class="card">
+        <div class="checklist" id="summerChecklist"></div>
+    </div>
+
+    <div class="cta-row">
+        <a href="index.html" class="btn-cta">Open Emily's Interactive Site →</a>
+        <a href="https://djctwo.github.io/emily/" class="btn-cta" target="_blank" rel="noopener">Live URL</a>
+    </div>
+</div>
+
+<!-- WINTER TAB -->
+<div class="panel" id="tab-winter">
+    <div class="urgent">
+        <div class="urgent-icon">🎫</div>
+        <div class="urgent-text">
+            <strong>Book now, not later.</strong> Dec holiday fares climb sharply after Oct. Optimal window: book Apr–Jun 2026.
+        </div>
+        <div class="urgent-days">
+            <strong id="winterDays3">—</strong>
+            days to arrival
+        </div>
+    </div>
+
+    <div class="section-head">Trip Overview</div>
+    <div class="card">
+        <div class="kpi-grid">
+            <div class="kpi">
+                <div class="kpi-val">16</div>
+                <div class="kpi-label">Days w/ Emily</div>
+                <div class="kpi-note">Dec 19 – Jan 3</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">8</div>
+                <div class="kpi-label">PTO days</div>
+                <div class="kpi-note">12/21-24 + 12/28-31</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">2x</div>
+                <div class="kpi-label">Leverage</div>
+                <div class="kpi-note">days/PTO day</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">$1.4k</div>
+                <div class="kpi-label">Est. flight</div>
+                <div class="kpi-note">LAS↔FRA RT</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-head">Flight Search Targets</div>
+    <div class="card">
+        <div class="flight-search">
+            <div><strong>Outbound:</strong> <span class="route">LAS → FRA</span> — Fri Dec 18 or Sat Dec 19, 2026</div>
+            <div><strong>Return:</strong> <span class="route">FRA → LAS</span> — Sat Jan 2 or Sun Jan 3, 2027</div>
+            <div class="hint">Routes: direct Condor (FRA), via BOS (JetBlue+Condor, summer pattern), via JFK (Delta/UA), via AMS (KLM/Delta)</div>
+        </div>
+        <div class="cta-row">
+            <a class="btn-cta urgent" href="https://www.google.com/travel/flights?q=LAS%20to%20FRA%20Dec%2019%202026%20return%20Jan%203%202027" target="_blank" rel="noopener">Google Flights</a>
+            <a class="btn-cta" href="https://www.skyscanner.com/transport/flights/las/fra/261219/270103/" target="_blank" rel="noopener">Skyscanner</a>
+            <a class="btn-cta" href="https://www.condor.com/" target="_blank" rel="noopener">Condor</a>
+            <a class="btn-cta" href="https://www.kayak.com/flights/LAS-FRA/2026-12-19/2027-01-03" target="_blank" rel="noopener">Kayak</a>
+        </div>
+    </div>
+
+    <div class="section-head">Date Tradeoffs</div>
+    <div class="card">
+        <table class="cmp-table">
+            <thead>
+                <tr><th>Option</th><th>Outbound</th><th>Return</th><th class="num">Days</th><th class="num">PTO</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="best">Standard</td>
+                    <td>Sat Dec 19</td>
+                    <td>Sun Jan 3</td>
+                    <td class="num">16</td>
+                    <td class="num">8</td>
+                    <td>Baseline plan — matches Emily's school break</td>
+                </tr>
+                <tr>
+                    <td>Stretch-early</td>
+                    <td>Fri Dec 18</td>
+                    <td>Sun Jan 3</td>
+                    <td class="num">17</td>
+                    <td class="num">9</td>
+                    <td>+1 day but costs 1 extra PTO. Somerset half-day 12/18, not strict</td>
+                </tr>
+                <tr>
+                    <td>Stretch-late</td>
+                    <td>Sat Dec 19</td>
+                    <td>Mon Jan 4</td>
+                    <td class="num">17</td>
+                    <td class="num">8</td>
+                    <td class="best">+1 day, no extra PTO. Somerset has PD day 1/4 (no school). Best value</td>
+                </tr>
+                <tr>
+                    <td>Stretch-both</td>
+                    <td>Fri Dec 18</td>
+                    <td>Mon Jan 4</td>
+                    <td class="num">18</td>
+                    <td class="num">9</td>
+                    <td>Max days, moderate PTO cost</td>
+                </tr>
+                <tr>
+                    <td class="bad">Tight</td>
+                    <td>Sun Dec 20</td>
+                    <td>Sat Jan 2</td>
+                    <td class="num">14</td>
+                    <td class="num">7</td>
+                    <td>Saves 1 PTO but 2 fewer days. Not worth it</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-head">Booking Checklist</div>
+    <div class="card">
+        <div class="checklist" id="winterChecklist"></div>
+    </div>
+
+    <div class="section-head">While She's Here — Activity Wishlist</div>
+    <div class="card">
+        <div class="checklist" id="winterActivities"></div>
+    </div>
+</div>
+
+<!-- SUMMER 2027 TAB -->
+<div class="panel" id="tab-summer27">
+    <div class="info-box">
+        <strong>Booking window opens Jan–Mar 2027.</strong> Summer fares are less volatile than winter — book ~4–6 months out. No urgency yet; today is Apr 2026.
+    </div>
+
+    <div class="section-head">Trip Overview</div>
+    <div class="card">
+        <div class="kpi-grid">
+            <div class="kpi">
+                <div class="kpi-val">15</div>
+                <div class="kpi-label">Days w/ Emily</div>
+                <div class="kpi-note">Jul 3 – Jul 17</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">9</div>
+                <div class="kpi-label">PTO days</div>
+                <div class="kpi-note">7/6-9 + 7/12-16</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">1.67x</div>
+                <div class="kpi-label">Leverage</div>
+                <div class="kpi-note">days/PTO day</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-val">$1.1k</div>
+                <div class="kpi-label">Est. flight</div>
+                <div class="kpi-note">LAS↔FRA RT</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-head">Flight Plan</div>
+    <div class="card">
+        <div class="flight-search">
+            <div><strong>Outbound:</strong> <span class="route">LAS → FRA</span> — Fri Jul 2 or Sat Jul 3, 2027</div>
+            <div><strong>Return:</strong> <span class="route">FRA → LAS</span> — Sat Jul 17 or Sun Jul 18, 2027</div>
+            <div class="hint">Prefer Condor direct FRA — same pattern as Summer 2026 return</div>
+        </div>
+    </div>
+
+    <div class="section-head">Date Tradeoffs</div>
+    <div class="card">
+        <table class="cmp-table">
+            <thead>
+                <tr><th>Option</th><th>Outbound</th><th>Return</th><th class="num">Days</th><th class="num">PTO</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="best">Standard</td>
+                    <td>Sat Jul 3</td>
+                    <td>Sat Jul 17</td>
+                    <td class="num">15</td>
+                    <td class="num">9</td>
+                    <td>Includes Jul 4 (observed Mon 7/5), both weekends</td>
+                </tr>
+                <tr>
+                    <td>Shorter</td>
+                    <td>Sat Jul 3</td>
+                    <td>Sun Jul 11</td>
+                    <td class="num">9</td>
+                    <td class="num">4</td>
+                    <td>Half the visit, half the PTO. Leaves budget for a third trip</td>
+                </tr>
+                <tr>
+                    <td>Extended</td>
+                    <td>Fri Jul 2</td>
+                    <td>Sun Jul 18</td>
+                    <td class="num">17</td>
+                    <td class="num">10</td>
+                    <td>Eats reserve PTO</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-head">Planning Checklist</div>
+    <div class="card">
+        <div class="checklist" id="summer27Checklist"></div>
+    </div>
+</div>
+
+<!-- ANALYSIS TAB -->
+<div class="panel" id="tab-analysis">
+    <div class="section-head">PTO ROI Comparison</div>
+    <div class="card">
+        <p style="font-size: 12px; color: #9ca3af; margin-bottom: 12px; line-height: 1.5;">Total days with Emily per PTO day. Higher = better leverage via paired weekends + federal holidays.</p>
+        <table class="cmp-table">
+            <thead>
+                <tr><th>Window</th><th class="num">Days</th><th class="num">PTO</th><th class="num">Ratio</th><th>Holiday leverage</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="best">Winter (Dec 19 – Jan 3)</td>
+                    <td class="num">16</td>
+                    <td class="num">8</td>
+                    <td class="num best">2.00x</td>
+                    <td>Christmas + NYE (2 Fed hols)</td>
+                </tr>
+                <tr>
+                    <td>Summer 2027 (Jul 3 – 17)</td>
+                    <td class="num">15</td>
+                    <td class="num">9</td>
+                    <td class="num">1.67x</td>
+                    <td>Independence Day observed</td>
+                </tr>
+                <tr>
+                    <td>Thanksgiving (Nov 21–29)</td>
+                    <td class="num">9</td>
+                    <td class="num">4</td>
+                    <td class="num">2.25x</td>
+                    <td>Thanksgiving + Veterans nearby</td>
+                </tr>
+                <tr>
+                    <td class="bad">Spring Break (Mar 13–21/27)</td>
+                    <td class="num">9</td>
+                    <td class="num">5</td>
+                    <td class="num bad">1.80x</td>
+                    <td>No Fed holiday — worst ratio</td>
+                </tr>
+                <tr>
+                    <td>Memorial Day (May 29 – Jun 6/27)</td>
+                    <td class="num">9</td>
+                    <td class="num">4</td>
+                    <td class="num">2.25x</td>
+                    <td>Memorial Day — but Emily still in school until 5/19</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="info-box" style="margin-top: 12px;">
+            <strong>Takeaway:</strong> Winter and Summer 2027 are the only windows that clear the 10-day floor while Emily is out of school. Thanksgiving has the best ratio but only 9 days — use as backup only.
+        </div>
+    </div>
+
+    <div class="section-head">Cost Projections</div>
+    <div class="card">
+        <table class="cmp-table">
+            <thead>
+                <tr><th>Item</th><th class="num">Winter est.</th><th class="num">Summer est.</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>LAS ↔ FRA flight</td>
+                    <td class="num">$1,200–1,600</td>
+                    <td class="num">$900–1,200</td>
+                    <td>Winter has Christmas surge. Book early</td>
+                </tr>
+                <tr>
+                    <td>Travel insurance</td>
+                    <td class="num">$60–120</td>
+                    <td class="num">$60–120</td>
+                    <td>Winter weather cancellations common</td>
+                </tr>
+                <tr>
+                    <td>In-KL food/activities</td>
+                    <td class="num">$400–600</td>
+                    <td class="num">$400–600</td>
+                    <td>Christmas markets add $100</td>
+                </tr>
+                <tr>
+                    <td>Train day trips</td>
+                    <td class="num">$150–250</td>
+                    <td class="num">$150–250</td>
+                    <td>DB Bahn, 1–2 trips each visit</td>
+                </tr>
+                <tr style="font-weight: 700;">
+                    <td>Total per visit</td>
+                    <td class="num best">~$1,900</td>
+                    <td class="num best">~$1,500</td>
+                    <td>Rough midpoints</td>
+                </tr>
+                <tr style="font-weight: 700;">
+                    <td>Both visits combined</td>
+                    <td colspan="2" class="num best" style="text-align: center;">~$3,400 annualized</td>
+                    <td>Prioritize: winter flight first</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-head">Booking Timing Guide</div>
+    <div class="card">
+        <table class="cmp-table">
+            <thead>
+                <tr><th>Month</th><th>Winter Visit</th><th>Summer 2027 Visit</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Apr 2026 (now)</td><td>Research fares, set tracker</td><td>Too early</td></tr>
+                <tr><td>May 2026</td><td class="best">Book if under $1,400</td><td>Too early</td></tr>
+                <tr><td>Jun 2026</td><td class="best">Optimal booking window</td><td>Too early</td></tr>
+                <tr><td>Jul 2026</td><td>Book if not yet done</td><td>Too early</td></tr>
+                <tr><td>Aug–Sep 2026</td><td class="bad">Last-chance window, prices rising</td><td>Too early</td></tr>
+                <tr><td>Oct–Nov 2026</td><td class="bad">Peak pricing, avoid</td><td>Too early</td></tr>
+                <tr><td>Jan–Feb 2027</td><td>—</td><td>Research fares</td></tr>
+                <tr><td>Mar–Apr 2027</td><td>—</td><td class="best">Optimal booking window</td></tr>
+                <tr><td>May 2027</td><td>—</td><td>Book if not yet done</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-head">Airport Alternatives</div>
+    <div class="card">
+        <table class="cmp-table">
+            <thead>
+                <tr><th>Airport</th><th>To KL</th><th>Pros</th><th>Cons</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="best">FRA (Frankfurt)</td>
+                    <td>~1h by train</td>
+                    <td>Direct from LAS via Condor · cheapest total</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>MUC (Munich)</td>
+                    <td>~4h train</td>
+                    <td>More flight options, Lufthansa hub</td>
+                    <td>Long overland transfer</td>
+                </tr>
+                <tr>
+                    <td>CDG (Paris)</td>
+                    <td>~4h TGV</td>
+                    <td>Fun intro to Europe for Emily</td>
+                    <td>Adds train cost + time</td>
+                </tr>
+                <tr>
+                    <td>LUX (Luxembourg)</td>
+                    <td>~2h</td>
+                    <td>Closer than FRA sometimes</td>
+                    <td>Fewer LAS-side options</td>
+                </tr>
+                <tr>
+                    <td class="bad">AMS (Amsterdam)</td>
+                    <td>~4–5h</td>
+                    <td>KLM/Delta options</td>
+                    <td>Long train, rarely cheaper</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-head">Decision Framework — Pull the Trigger When</div>
+    <div class="card">
+        <ol style="padding-left: 20px; font-size: 12px; color: #c8cdd8; line-height: 1.9;">
+            <li>Google Flights shows "Low price" badge for the LAS↔FRA RT</li>
+            <li>Total round-trip < <strong style="color:#4ade80">$1,400</strong> (good) or < <strong style="color:#fbbf24">$1,600</strong> (acceptable)</li>
+            <li>At least one direct FRA leg available (saves connection risk)</li>
+            <li>Seat map shows decent availability (not last 3 rows only)</li>
+            <li>Return flight lands before Emily's school resumes (Jan 5, 2027)</li>
+            <li>Travel insurance available for the airline</li>
+        </ol>
+    </div>
+
+    <div class="section-head">Contingencies</div>
+    <div class="card">
+        <table class="cmp-table">
+            <thead>
+                <tr><th>Scenario</th><th>Response</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>GDIT PTO denied for Dec 28-31</td><td>Fall back to Dec 21-24 only (12 days, 4 PTO). Still beats 10-day floor</td></tr>
+                <tr><td>Winter flight prices stay above $1,800</td><td>Consider Thanksgiving visit (9 days, 4 PTO) as backup Q4 trip</td></tr>
+                <tr><td>Emily sick / can't fly Dec</td><td>Shift to spring break (Mar 13-21, 2027 · 9 days / 5 PTO)</td></tr>
+                <tr><td>Family emergency requires more PTO</td><td>Trim Summer 2027 from 15→9 days (saves 5 PTO)</td></tr>
+                <tr><td>GDIT carryover policy changes</td><td>Front-load PTO usage to Winter + Spring instead of Winter + Summer</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- TIMELINE TAB -->
+<div class="panel" id="tab-timeline">
+    <div class="info-box">
+        <strong>Timeline view:</strong> All upcoming Emily-related dates, school milestones, PTO blocks, and federal holidays. Sorted chronologically from today forward.
+    </div>
+    <div class="card">
+        <div id="timeline"></div>
+    </div>
+</div>
+
+<div class="footer">
+    Local planning hub · <a href="Visit_Plan_2026-2027.md">Visit_Plan_2026-2027.md</a> · <a href="CLAUDE.md">CLAUDE.md</a> · <a href="https://github.com/djctwo/emily">djctwo/emily</a>
+</div>
+
+</div>
+
+<script>
+// Tab switching
+function showTab(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => showTab(btn.dataset.tab));
+});
+
+// Countdowns
+function daysUntil(dateStr) {
+    const target = new Date(dateStr + 'T00:00:00');
+    const now = new Date();
+    return Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+}
+function updateCountdowns() {
+    const s26 = daysUntil('2026-06-03');
+    const w = daysUntil('2026-12-19');
+    const s27 = daysUntil('2027-07-03');
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v >= 0 ? v : 'past'; };
+    set('summer26Days', s26);
+    set('winterDays', w);
+    set('winterDays2', w);
+    set('winterDays3', w);
+    set('summer27Days', s27);
+}
+
+// Checklists with localStorage persistence
+function renderChecklist(containerId, storageKey, items) {
+    const el = document.getElementById(containerId);
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    el.innerHTML = items.map(item => `
+        <label class="check-item ${saved[item.id] ? 'done' : ''}" for="chk-${storageKey}-${item.id}">
+            <input type="checkbox" id="chk-${storageKey}-${item.id}" data-id="${item.id}" ${saved[item.id] ? 'checked' : ''}>
+            <div style="flex:1">
+                <div class="check-label">${item.label}</div>
+                ${item.meta ? `<div class="check-meta">${item.meta}</div>` : ''}
+                ${item.links && item.links.length ? `<div class="check-links">${item.links.map(l => `<a class="check-link" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}</div>` : ''}
+            </div>
+        </label>
+    `).join('');
+    el.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', e => {
+            const id = e.target.dataset.id;
+            const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            saved[id] = e.target.checked;
+            localStorage.setItem(storageKey, JSON.stringify(saved));
+            e.target.closest('.check-item').classList.toggle('done', e.target.checked);
+        });
+    });
+}
+
+// Summer 2026 checklist
+const summerItems = [
+    { id: 'passport', label: 'Verify Emily\'s passport valid through Dec 2026', meta: '6-month Schengen rule from return date Jun 25' },
+    { id: 'athens-docs', label: 'Download Athens apartment/flight confirmations offline', meta: 'PDF copies on phone + email backup' },
+    { id: 'kl-apartment-prep', label: 'Prep dad\'s KL apartment for guest', meta: 'Spare sheets, towels, room setup' },
+    { id: 'emily-phone', label: 'Get Emily an eSIM or European data plan', meta: 'Airalo / Holafly / US carrier intl add-on' },
+    { id: 'tgv-tickets', label: 'Buy Paris TGV tickets Jun 6-7', meta: 'SNCF Connect, ~2-3 weeks ahead' },
+    { id: 'athens-activities', label: 'Pre-book Athens attractions', meta: 'Acropolis timed entry fills up — GetYourGuide' },
+    { id: 'dusseldorf-food', label: 'Reserve Düsseldorf Japanese restaurant', meta: 'Takumi / Marutoma etc. Fri Jun 20 evening' },
+    { id: 'packing-list', label: 'Share packing list with Emily', meta: 'Weather mid-60s-80s across trip; rain gear optional' },
+    { id: 'emergency-contacts', label: 'Write down emergency contacts for Emily', meta: 'Dad\'s DE phone +49 15224497226, embassy, hotels' },
+    { id: 'cash-euros', label: 'Have €150 cash ready for arrival', meta: 'Small bills for taxi/food day 1' },
+];
+
+// Winter checklist
+const winterItems = [
+    { id: 'set-tracker', label: 'Set Google Flights price tracker', meta: 'LAS↔FRA Dec 19 → Jan 3, alert when under $1,400', links: [
+        { label: 'Set tracker', url: 'https://www.google.com/travel/flights?q=LAS%20to%20FRA%20Dec%2019%202026%20return%20Jan%203%202027' }
+    ]},
+    { id: 'pick-option', label: 'Pick date option from tradeoff table', meta: 'Standard (Sat 12/19 → Sun 1/3) or Stretch-late (Sat 12/19 → Mon 1/4) recommended' },
+    { id: 'compare-routes', label: 'Compare 3+ route options', meta: 'Direct Condor FRA, via BOS (JetBlue+Condor), via JFK (UA/Delta)' },
+    { id: 'book-outbound', label: 'Book outbound LAS → FRA', meta: 'Prefer direct Condor; keep confirmation safe' },
+    { id: 'book-return', label: 'Book return FRA → LAS', meta: 'Condor direct DE2062 pattern worked in Jun 2026' },
+    { id: 'insurance', label: 'Add travel insurance', meta: 'Winter weather cancellations. AXA / Allianz / airline option' },
+    { id: 'pto-request', label: 'Submit GDIT PTO request', meta: '12/21-12/24 + 12/28-12/31 (8 days). Submit ≥4 weeks ahead, ideally by Nov' },
+    { id: 'passport-winter', label: 'Confirm passport valid through Jul 2027', meta: 'Schengen 6mo rule from Jan 3 return' },
+    { id: 'emily-school-off', label: 'Confirm Somerset winter break 12/19–1/3 still holds', meta: 'Calendar is DRAFT; check once board finalizes' },
+    { id: 'activities', label: 'Plan Christmas market schedule', meta: 'Kaiserslautern, Heidelberg, Strasbourg, Cologne — all Dec-dependent' },
+];
+
+const winterActivityItems = [
+    { id: 'kl-xmas-market', label: 'Kaiserslautern Weihnachtsmarkt', meta: 'Stiftsplatz, late Nov - Dec 22. Glühwein, food stalls' },
+    { id: 'heidelberg', label: 'Heidelberg day trip', meta: '1h train; castle + Xmas market combo' },
+    { id: 'strasbourg', label: 'Strasbourg Christkindelsmärik', meta: '90min drive, best Xmas market region-wide. Day trip or overnight' },
+    { id: 'cologne', label: 'Cologne cathedral + Xmas markets', meta: '2h train; 7+ markets within walking distance' },
+    { id: 'frankfurt-xmas', label: 'Frankfurt Xmas market before flight out', meta: 'Römerberg, early Jan fading — go early in trip' },
+    { id: 'nye-plan', label: 'NYE plan — KL or short trip?', meta: 'Ramstein usually has event; or Berlin/Vienna NYE celebrations' },
+    { id: 'skiing', label: 'Ski day in Black Forest or Alps', meta: 'Feldberg (~2h) for beginners; or train to Austria for bigger resorts' },
+    { id: 'cooking-night', label: 'Cook German meal at home', meta: 'Raclette / käsespätzle / maultaschen — quiet night' },
+    { id: 'museums', label: 'Visit KL museum(s)', meta: 'Pfalzgalerie art museum, or Theodor-Zink heimatmuseum' },
+];
+
+// Summer 2027 checklist
+const summer27Items = [
+    { id: 'track-jan', label: 'Start tracking LAS↔FRA summer fares Jan 2027', meta: 'Google Flights tracker, alert on $1,000 or lower' },
+    { id: 'book-flight-s27', label: 'Book flights (Mar–Apr 2027)', meta: 'Optimal window per booking timing table' },
+    { id: 'pto-request-s27', label: 'Submit GDIT PTO request Apr 2027', meta: '9 days: Jul 6-9 + Jul 12-16' },
+    { id: 'passport-s27', label: 'Confirm passport valid through Jan 2028', meta: 'Schengen 6mo from Jul 17 return' },
+    { id: 'theme-decide', label: 'Decide Summer 2027 theme', meta: 'Options: Italy/Greece islands, Nordic (Iceland/Norway), deep Germany, France coast' },
+    { id: 'brainstorm', label: 'Brainstorm 2-3 cities to visit', meta: 'Not Athens/Düsseldorf again (repeated from 2026)' },
+    { id: 'kl-activities', label: 'Update KL activities list for 2027', meta: 'What\'s new in KL since 2026 trip' },
+    { id: 'budget-estimate', label: 'Build budget estimate', meta: 'Use analysis tab midpoints as starting point' },
+];
+
+// Timeline events
+const timelineEvents = [
+    { date: '2026-06-03', label: 'Emily arrives FRA', meta: 'Summer 2026 trip start · LAS→BOS→FRA', tag: 'emily', tagLabel: 'Summer' },
+    { date: '2026-06-14', label: 'Athens leg begins', meta: 'SKY Express FRA→ATH · 5 nights at Acropolis Muses', tag: 'trip', tagLabel: 'Trip' },
+    { date: '2026-06-20', label: 'Düsseldorf leg', meta: 'Japantown + sightseeing · 3 nights', tag: 'trip', tagLabel: 'Trip' },
+    { date: '2026-06-25', label: 'Emily departs FRA', meta: 'Condor DE2062 direct FRA→LAS · seat 20A', tag: 'emily', tagLabel: 'Summer' },
+    { date: '2026-07-04', label: 'Independence Day', meta: 'GDIT holiday', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2026-08-10', label: 'Emily starts 11th grade', meta: 'Somerset Academy first day', tag: 'trip', tagLabel: 'School' },
+    { date: '2026-09-07', label: 'Labor Day', meta: 'GDIT holiday', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2026-10-09', label: 'Q1 grading ends (Emily)', meta: 'Somerset 1st quarter complete', tag: 'trip', tagLabel: 'School' },
+    { date: '2026-11-11', label: 'Veterans Day', meta: 'GDIT + Emily off school', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2026-11-23', label: 'Emily Thanksgiving break', meta: '11/23–11/27 school closed', tag: 'trip', tagLabel: 'School' },
+    { date: '2026-11-26', label: 'Thanksgiving', meta: 'GDIT holiday', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2026-12-18', label: 'Somerset half-day', meta: 'End Q2/1st Semester · stretch arrival option', tag: 'trip', tagLabel: 'School' },
+    { date: '2026-12-19', label: 'Emily arrives (Winter visit)', meta: 'Winter break begins · planned arrival', tag: 'emily', tagLabel: 'Winter' },
+    { date: '2026-12-21', label: 'PTO begins', meta: '12/21–12/24 (4 days)', tag: 'pto', tagLabel: 'PTO' },
+    { date: '2026-12-25', label: 'Christmas Day', meta: 'GDIT holiday', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2026-12-28', label: 'PTO resumes', meta: '12/28–12/31 (4 days)', tag: 'pto', tagLabel: 'PTO' },
+    { date: '2027-01-01', label: 'New Year\'s Day', meta: 'GDIT holiday', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2027-01-03', label: 'Emily departs (Winter)', meta: 'Planned return · school resumes Jan 5', tag: 'emily', tagLabel: 'Winter' },
+    { date: '2027-01-04', label: 'Somerset PD day', meta: 'Emily no school · optional stretch return date', tag: 'trip', tagLabel: 'School' },
+    { date: '2027-01-18', label: 'MLK Day', meta: 'GDIT + Emily off', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2027-02-15', label: 'Presidents Day', meta: 'GDIT + Emily off', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2027-03-15', label: 'Emily spring break', meta: '3/15–3/19 · backup visit window', tag: 'trip', tagLabel: 'School' },
+    { date: '2027-05-19', label: 'Emily last day of school', meta: 'Somerset 26-27 year ends', tag: 'trip', tagLabel: 'School' },
+    { date: '2027-05-31', label: 'Memorial Day', meta: 'GDIT holiday', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2027-07-03', label: 'Emily arrives (Summer visit)', meta: 'Summer 2027 visit start', tag: 'emily', tagLabel: 'Summer' },
+    { date: '2027-07-05', label: 'July 4th observed', meta: 'GDIT holiday', tag: 'holiday', tagLabel: 'Fed' },
+    { date: '2027-07-06', label: 'PTO begins', meta: '7/6–7/9 + 7/12–7/16 (9 days)', tag: 'pto', tagLabel: 'PTO' },
+    { date: '2027-07-17', label: 'Emily departs (Summer)', meta: 'Summer 2027 visit end', tag: 'emily', tagLabel: 'Summer' },
+];
+
+function renderTimeline() {
+    const tl = document.getElementById('timeline');
+    const now = new Date(); now.setHours(0,0,0,0);
+    const future = timelineEvents.filter(e => new Date(e.date + 'T00:00:00') >= now);
+    tl.innerHTML = future.map(e => {
+        const d = new Date(e.date + 'T00:00:00');
+        const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        return `
+            <div class="tl-row">
+                <div class="tl-date">${dateStr}</div>
+                <div>
+                    <div class="tl-event">${e.label}</div>
+                    <div class="tl-event-meta">${e.meta}</div>
+                </div>
+                <div class="tl-tag tag-${e.tag}">${e.tagLabel}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Init
+updateCountdowns();
+renderChecklist('summerChecklist', 'emilySummer26Checklist', summerItems);
+renderChecklist('winterChecklist', 'emilyWinterChecklist', winterItems);
+renderChecklist('winterActivities', 'emilyWinterActivities', winterActivityItems);
+renderChecklist('summer27Checklist', 'emilySummer27Checklist', summer27Items);
+renderTimeline();
+</script>
+
+</body>
+</html>

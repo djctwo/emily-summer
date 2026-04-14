@@ -7,6 +7,8 @@ Repo home for Emily-related planning: travel dashboards, visit plans, and future
 
 **Visit Plan 2026-2027** — `Visit_Plan_2026-2027.md` — optimized PTO plan for 2 visits (Dec 2026 winter + Jul 2027 summer) totaling 31 days with Emily for 17 PTO days.
 
+**Local Planning Dashboard** — `dashboard.html` — local-only (no password) tabbed dashboard for planning all three visits. Six tabs: Overview, Summer 2026, Winter Visit, Summer 2027, Analysis, Timeline. 4 localStorage checklists (Summer 2026 pre-trip, Winter booking, Winter activities, Summer 2027 planning). Analysis tab has 6 comparison tables (PTO ROI, Cost Projections, Booking Timing, Airport Alternatives, Decision Framework, Contingencies). Emily's public `index.html` with password gate stays untouched so she can still access her trip site.
+
 ## Repo Rename
 Renamed `emily-summer` → `emily` on 2026-04-14 to host broader Emily-related planning beyond the single 2026 trip.
 
