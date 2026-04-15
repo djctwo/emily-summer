@@ -17,7 +17,7 @@ Renamed `emily-summer` → `emily` on 2026-04-14 to host broader Emily-related p
 - **Remote**: `https://github.com/djctwo/emily` (public, branch: main)
 - **Live URL**: `https://djctwo.github.io/emily/`
 - **Password**: SHA-256 hashed (`emilysummer123!@#`), sessionStorage persistence
-- **Launcher**: `~/Applications/Dashboards/Emily Summer.app`
+- **Launcher**: `~/Applications/Dashboards/Emily Summer.app` — launch script opens `https://djctwo.github.io/emily/` (updated 2026-04-15 post-rename)
 
 ## Traveler
 - **Emily Elizabeth Cleary**, 15 years old, from Las Vegas
