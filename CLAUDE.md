@@ -27,8 +27,9 @@ Renamed `emily-summer` → `emily` on 2026-04-14 to host broader Emily-related p
 ## Trip Structure
 - **Jun 3**: Travel LAS→BOS→FRA (JetBlue B6478 + Condor DE2039, booking 15635316-02)
 - **Jun 4-5**: Arrival & KL settling in
-- **Jun 6-7**: Weekend 1 — Paris by TGV (suggested)
-- **Jun 8-13**: Explorer week (KL solo activities + Rhine Valley day trip Sat)
+- **Jun 6-7**: First weekend in KL with Dad
+- **Jun 8-13**: Explorer week (solo weekdays + Paris day trip Wed Jun 10 + Rhine Valley day trip Sat)
+  - **Jun 10**: Paris day trip — ICE 9558 KL Hbf 07:22→Paris Est 09:50 / ICE 9557 Paris Est 19:06→KL Hbf 21:35
 - **Jun 14-18**: Athens, Greece (SKY express, confirmation FX4K8A, Acropolis Muses apartment booking 5392664665)
 - **Jun 19**: Recovery day
 - **Jun 20-22**: Düsseldorf (Japantown, Spanish restaurants, sightseeing; Bad Bunny concert Sun night NOT shown)
